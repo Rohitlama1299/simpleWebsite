@@ -1,0 +1,120 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffebee; /* Light pink background */
+    color: #d32f2f; /* Dark red text */
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .page {
+    background-color: #ffffff; /* White container */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    position: relative;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  button {
+    background-color: #d32f2f; /* Dark red button */
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #b71c1c; /* Darker red on hover */
+  }
+  
+  button i {
+    margin-left: 0.5rem;
+  }
+  
+  .icons {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    font-size: 2rem;
+    color: #d32f2f;
+  }
+  
+  input {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 2px solid #d32f2f;
+    border-radius: 5px;
+    width: 80%;
+    margin-bottom: 1rem;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #b71c1c;
+  }
+  
+  .answerButton {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    margin: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .answerButton:hover {
+    background-color: #b71c1c;
+  }
+  
+  #errorMessage {
+    color: #ff1744;
+    font-weight: bold;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+  }
+  
+  #finalResponse {
+    font-size: 1.5rem;
+    color: #d32f2f;
+    margin-top: 1rem;
+  }
+  
+  #happyCat {
+    max-width: 100%;
+    height: auto;
+    margin-top: 1rem;
+  }
+  
