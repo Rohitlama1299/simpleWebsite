@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Valentine?</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <style>
+      body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f2f2f2;
+    }
+
+    .page {
+      display: none;
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .answerButton {
+      display: block;
+      margin: 10px auto;
+      padding: 15px;
+      font-size: 1.1rem;
+      background-color: #ff5c8d;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      width: 80%;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .answerButton:hover {
+      background-color: #e4496d;
+    }
+
+    #errorAnswer, #errorMessage {
+      color: red;
+      font-size: 1.2rem;
+      margin-top: 20px;
+    }
+
+    .icons {
+      font-size: 2rem;
+      margin-top: 20px;
+    }
+
+    #finalResponse {
+      font-size: 1.5rem;
+      color: #ff5c8d;
+    }
+
+     /* Mobile Responsiveness */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.6rem; /* Adjusting font size for smaller screens */
+    line-height: 1.3; /* Ensures heading has some breathing room */
+    margin-bottom: 10px; /* Reduces margin so it fits better */
+  }
+
+  .answerButton {
+    font-size: 1rem; /* Adjust button text size for smaller screens */
+    padding: 12px;
+  }
+
+  .icons {
+    font-size: 1.5rem; /* Adjust icon size for smaller screens */
+  }
+
+  #finalResponse {
+    font-size: 1.2rem; /* Adjust final response text size */
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.3rem; /* Further adjustment for very small screens */
+    margin-bottom: 8px; /* More compact space for tiny screens */
+  }
+
+  .answerButton {
+    font-size: 0.9rem; /* Further adjustment for buttons */
+    padding: 10px;
+  }
+
+  .icons {
+    font-size: 1.2rem; /* Adjust icons for very small screens */
+  }
+
+  #finalResponse {
+    font-size: 1rem; /* Smaller text size for the final response */
+  }
+}
+  </style>
+</head>
+<body>
+  <!-- Page 1: Name Asking Page -->
+  <div id="page1" class="page active">
+    <h1>Hmmm... Who Do We Have Here? 🧐</h1>
+    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExODIyaWMweHJ6NmxwdjBydTE1cTllcTNpdWUwN2VkM3BoOTZmMjk1YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/pNsT0jiaiPqZr8AOGU/giphy.gif" alt="Cat Holding a Letter">
+    <p>Okay, not trying to stalk or anything... but what’s your name? 👀</p>
+    <input id="nameInput" type="text" placeholder="Enter your name... but don't be shy!">
+    <button id="nameSubmit">Okay, let's go! <i class="fas fa-arrow-right"></i></button>
+    <p id="errorMessage" class="hidden">Oops, this isn’t for you. Please exit the site (unless you’re P..ya, then you're welcome)! 🙄</p>
+  </div>
+
+  <!-- Page 2: Quiz - What Do I Like About You? -->
+  <div id="questionPage" class="page hidden">
+    <img id="questionCat" src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Thinking Cat">
+    <p>What do I *absolutely* adore about you?</p>
+    <button class="answerButton" data-answer="eyes">Those Gorgeous Eyes 👀</button>
+    <button class="answerButton" data-answer="cheeks">Your Cheeks (Yes, I'm staring) 😘</button>
+    <button class="answerButton" data-answer="lips">Those Lips! 😚</button>
+    <button class="answerButton" data-answer="all">All of the Above (A.K.A. You’re Perfect 😏)</button>
+    <p id="errorAnswer" class="hidden">Oops... that's not it. Try again, lovebug! 😜</p>
+  </div>
+
+  <!-- Correct Answer Page (After Page 2) -->
+  <div id="correctPage" class="page hidden">
+    <h1>It’s REALLY You, Pratikshya! Welcome! 🎉</h1>
+    <img id="welcomeCat" src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif" alt="Welcoming Cat">
+    <button id="proceedButton">Proceed to Awesomeness <i class="fas fa-arrow-right"></i></button>
+  </div>
+
+  <!-- Original First Page (After Correct Answer) -->
+  <div id="page1AfterCorrect" class="page hidden">
+    <img id="questionCat" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2d3bTZ3YTZveTVmYmJhZjFwaTN1Y3lmcGJqNHEzdGIzZ3Njb2FmeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/z1HitrABsfTgs/giphy.gif" alt="Thinking Cat">
+    <h1>Oi Fuchii, 😏</h1>
+    <p>I cooked up something special just for you. Are you ready to feast on it? 🍽️💓</p>
+    <button id="finalButton">Say Yes! (Pretty please) <i class="fas fa-heart"></i></button>
+    <div class="icons">
+      <i class="fas fa-heart"></i>
+      <i class="fas fa-cat"></i>
+      <i class="fas fa-paw"></i>
+    </div>
+  </div>
+
+  <!-- Final Page (Will You Be My Valentine?) -->
+<div id="finalPage" class="page hidden">
+    <h1>Okay, This Is a Serious Proposal... 😳</h1>
+    <p>
+        Before you answer, remember... breaking hearts is a crime in 37 countries. 💔  
+        So... *Will you be my Valentine?* 🎯
+    </p>
+
+    <img id="bear" src="https://media1.giphy.com/media/MnkVb2TyZ08mZEkhUU/giphy.gif" alt="Cute Bear with Hearts">
+
+    <button id="yesButton">YES! (Duh, of course 😍)</button>
+</div>
+
+  <script>
+
+document.getElementById("yesButton").addEventListener("click", function() {
+        window.location.href = "message.html"; // Redirects to the message form page
+    });
+    // Page Navigation: Name Asking Page to Question Page
+    document.getElementById("nameSubmit").addEventListener("click", function() {
+      const name = document.getElementById("nameInput").value.trim().toLowerCase();
+      if (name === "pratikshya") {
+        document.getElementById("page1").classList.remove("active");
+        document.getElementById("questionPage").classList.add("active");
+      } else {
+        const errorMessage = document.getElementById("errorMessage");
+        errorMessage.classList.remove("hidden");
+        setTimeout(function() {
+          errorMessage.classList.add("hidden");
+        }, 3000);
+      }
+    });
+
+    // Question Quiz: What do I like about you?
+    document.querySelectorAll(".answerButton").forEach(button => {
+      button.addEventListener("click", function() {
+        const answer = button.getAttribute("data-answer");
+        if (answer === "all") {
+          document.getElementById("questionPage").classList.remove("active");
+          document.getElementById("correctPage").classList.add("active");
+        } else {
+          document.getElementById("errorAnswer").classList.remove("hidden");
+          setTimeout(function() {
+            document.getElementById("errorAnswer").classList.add("hidden");
+          }, 3000);
+        }
+      });
+    });
+
+    // Correct Answer Page to Original First Page
+    document.getElementById("proceedButton").addEventListener("click", function() {
+      document.getElementById("correctPage").classList.remove("active");
+      document.getElementById("page1AfterCorrect").classList.add("active");
+    });
+
+    // Final Page Button
+    document.getElementById("finalButton").addEventListener("click", function() {
+      document.getElementById("page1AfterCorrect").classList.remove("active");
+      document.getElementById("finalPage").classList.add("active");
+    });
+
+    // Final Response Button (Confetti and message)
+    document.getElementById("finalResponseButton").addEventListener("click", function() {
+      document.getElementById("finalPage").classList.remove("active");
+      document.getElementById("messagePage").classList.add("active");
+
+      // Confetti!
+      if (typeof confetti === "function") {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    });
+     
+  </script>
+</body>
+</html>
